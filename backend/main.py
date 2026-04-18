@@ -6,11 +6,11 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.models.database import initialize_database
-from backend.routers.assessments import router as assessments_router
-from backend.routers.auth import router as auth_router
-from backend.routers.image_diagnosis import router as image_router
-from backend.routers.symptom import router as symptom_router
+from models.database import initialize_database
+from routers.assessments import router as assessments_router
+from routers.auth import router as auth_router
+from routers.image_diagnosis import router as image_router
+from routers.symptom import router as symptom_router
 
 
 logger = logging.getLogger(__name__)
