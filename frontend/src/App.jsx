@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import Navbar from './components/Navbar'
+import ImageDiagnosis from './pages/ImageDiagnosis'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -63,10 +64,9 @@ function App() {
           <Route
             path="/image-diagnosis"
             element={
-              <PlaceholderPage
-                title="Image Diagnosis"
-                description="Upload a skin image for a first-pass AI screening result and dermatologist-oriented guidance."
-              />
+              <ProtectedRoute>
+                <ImageDiagnosis />
+              </ProtectedRoute>
             }
           />
           <Route
