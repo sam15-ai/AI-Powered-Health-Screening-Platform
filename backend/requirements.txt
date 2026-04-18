@@ -6,6 +6,8 @@ python-multipart
 pydantic
 python-jose
 passlib
+bcrypt
+email-validator
 pillow
 numpy
 scikit-learn
