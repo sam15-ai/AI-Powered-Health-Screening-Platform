@@ -1,10 +1,10 @@
 import logging
 
+import bcrypt
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from passlib.context import CryptContext
 
 from backend.models.database import User, get_db
 from backend.schemas.user import Token, UserCreate, UserLogin, UserResponse
@@ -12,8 +12,15 @@ from backend.utils.jwt import create_access_token, get_current_user
 
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 logger = logging.getLogger(__name__)
+
+
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+def verify_password(plain: str, hashed: str) -> bool:
+    return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
@@ -38,7 +45,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)) -> dict[str, 
         )
 
     try:
-        hashed_password = pwd_context.hash(user.password)
+        hashed_password = hash_password(user.password)
     except Exception as exc:
         logger.exception("Password hashing failed for %s", user.email)
         raise HTTPException(
@@ -88,7 +95,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)) -> dict[str, 
 @router.post("/login", response_model=Token)
 def login_user(user: UserLogin, db: Session = Depends(get_db)) -> Token:
     db_user = db.query(User).filter(User.email == user.email).first()
-    if not db_user or not pwd_context.verify(user.password, db_user.hashed_password):
+    if not db_user or not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password.",
