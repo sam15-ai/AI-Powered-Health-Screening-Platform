@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from models.database import Base, engine
 from routers.auth import router as auth_router
+from routers.symptom import router as symptom_router
 
 
 app = FastAPI(
@@ -15,6 +16,7 @@ app = FastAPI(
 Base.metadata.create_all(bind=engine)
 
 app.include_router(auth_router)
+app.include_router(symptom_router)
 
 
 @app.get("/")
