@@ -1,3 +1,5 @@
+Primary contributor: Shubham Mohole, Samruddhi Paiyawal
+
 # AI-Powered Health Screening Platform
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
@@ -107,6 +109,7 @@ Contributions are welcome. To contribute:
 
 When working on healthcare-related features, prioritize accessibility, privacy,
 ethical AI usage, and safe communication of risk.
+
 
 ## Future Improvements
 
